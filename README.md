@@ -1,4 +1,4 @@
-# 🇻🇳 Vietnamese Financial News Summarization — Fine-tuning Pipeline
+# 🇻🇳 Vietnamese Sports News Summarization — Fine-tuning Pipeline
 
 > **Môn học**: Xử lý Ngôn ngữ Tự nhiên (NLP)  
 > **Sinh viên**: 52300102 & 52300107  
@@ -24,7 +24,7 @@
 
 ## 📖 Giới thiệu
 
-Dự án thực hiện **fine-tune ≥ 2 mô hình pretrained tiếng Việt** cho bài toán **tóm tắt văn bản tài chính** (nguồn VnExpress), với các ràng buộc nghiêm ngặt:
+Dự án thực hiện **fine-tune ≥ 2 mô hình pretrained tiếng Việt** cho bài toán **tóm tắt văn bản thể thao** (nguồn VnExpress), với các ràng buộc nghiêm ngặt:
 
 | Ràng buộc | Mô tả |
 |---|---|
@@ -45,7 +45,7 @@ Dự án thực hiện **fine-tune ≥ 2 mô hình pretrained tiếng Việt** c
 ## 🏗️ Kiến trúc hệ thống
 
 ```
-VnExpress Dataset (CSV)
+VnExpress Sports Dataset (CSV)
         │
         ▼
 ┌─────────────────────────────────────────┐
@@ -53,7 +53,7 @@ VnExpress Dataset (CSV)
 │                                         │
 │  Stage 1: XL-Sum Vietnamese (3K mẫu)   │  ← Học cách tóm tắt tổng quát
 │         ↓                               │
-│  Stage 2: VnExpress Dataset             │  ← Domain-specific fine-tuning
+│  Stage 2: VnExpress Sports Dataset      │  ← Domain-specific fine-tuning
 └─────────────────────────────────────────┘
         │
         ▼
@@ -121,9 +121,9 @@ Trước khi chạy notebook, hãy tạo cấu trúc sau trong **Google Drive**:
 ```
 MyDrive/
 └── nlp/
-    ├── train.csv      ← Dữ liệu training VnExpress
-    ├── val.csv        ← Dữ liệu validation VnExpress
-    ├── test.csv       ← Dữ liệu test VnExpress
+    ├── train.csv      ← Dữ liệu training VnExpress (thể thao)
+    ├── val.csv        ← Dữ liệu validation VnExpress (thể thao)
+    ├── test.csv       ← Dữ liệu test VnExpress (thể thao)
     └── outputs/       ← (Tự tạo khi chạy) chứa model checkpoints
 ```
 
@@ -133,8 +133,8 @@ Mỗi file CSV phải có **đúng 2 cột** (tên cột không phân biệt hoa
 
 | Cột | Mô tả | Ví dụ |
 |---|---|---|
-| `content` (hoặc `article`) | Văn bản gốc (bài báo VnExpress) | "Ngân hàng Nhà nước vừa công bố..." |
-| `summary` | Bản tóm tắt mẫu | "NHNN công bố lãi suất..." |
+| `content` (hoặc `article`) | Văn bản gốc (bài báo thể thao VnExpress) | "Đội tuyển Việt Nam vừa giành chiến thắng..." |
+| `summary` | Bản tóm tắt mẫu | "ĐT Việt Nam thắng 2-0 trong trận đấu..." |
 
 > 💡 Notebook tự động đổi tên cột `article` → `content` nếu cần.
 
@@ -263,13 +263,13 @@ Khởi tạo các metrics: ROUGE, BLEU (sacrebleu), METEOR, BERTScore.
 
 ```
 Stage 1 (XL-Sum) → vit5_stage1/
-Stage 2 (VnExpress) → vit5_stage2/
+Stage 2 (VnExpress Sports) → vit5_stage2/
 Final model → vit5_final/
 ```
 
 **Thời gian ước tính** (T4 GPU):
 - Stage 1 (3 epochs, 3000 mẫu): ~25–35 phút
-- Stage 2 (5 epochs, dataset của bạn): phụ thuộc kích thước dataset
+- Stage 2 (5 epochs, dataset thể thao VnExpress): phụ thuộc kích thước dataset
 
 ✅ **Checkpoint tự động**: Nếu Colab bị ngắt, chạy lại cell — notebook sẽ **tự detect checkpoint** và resume từ điểm cuối.
 
@@ -279,7 +279,7 @@ Final model → vit5_final/
 
 ```
 Stage 1 (XL-Sum + LoRA) → bartpho_stage1/
-Stage 2 (VnExpress + LoRA) → bartpho_stage2/
+Stage 2 (VnExpress Sports + LoRA) → bartpho_stage2/
 Final model → bartpho_final/
 ```
 
