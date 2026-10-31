@@ -1,4 +1,4 @@
-# 🇻🇳 Vietnamese Sports News Summarization — Fine-tuning Pipeline !
+# 🇻🇳 Vietnamese Sports News Summarization — Fine-tuning Pipeline 
 
 > **Môn học**: Xử lý Ngôn ngữ Tự nhiên (NLP)  
 > **Sinh viên**: 52300102 & 52300107  
